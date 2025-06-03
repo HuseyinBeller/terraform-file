@@ -14,20 +14,17 @@ module "network" {
 
 # Security Groups Module
 module "security" {
-  source = "./modules/security"
-
+  source        = "./modules/security"
   vpc_id        = module.network.vpc_id
   default-route = var.default-route
   project_name  = var.project_name
   environment   = var.environment
   portnumber    = var.portnumber
   my_ip         = var.my_ip
-
 }
 
 module "ec2" {
-  source = "./modules/ec2"
-
+  source             = "./modules/ec2"
   project_name       = var.project_name
   instance-profile   = module.iam.iam_instance_profile
   keyname            = module.keypair.keypair
@@ -40,8 +37,7 @@ module "ec2" {
 
 # IAM Module
 module "iam" {
-  source = "./modules/iam"
-
+  source       = "./modules/iam"
   project_name = var.project_name
 }
 

@@ -27,7 +27,7 @@ resource "aws_subnet" "public" {
 resource "aws_subnet" "private" {
   count             = 2
   vpc_id            = aws_vpc.main.id
-  cidr_block        = cidrsubnet(var.vpc_cidr, 4, count.index +2)
+  cidr_block        = cidrsubnet(var.vpc_cidr, 4, count.index + 2)
   availability_zone = data.aws_availability_zones.azs.names[count.index]
 
   tags = {
@@ -46,18 +46,9 @@ resource "aws_internet_gateway" "main" {
   }
 }
 
-# Single NAT Gateway for cost optimization
-resource "aws_nat_gateway" "main" {
-  allocation_id = aws_eip.nat.id
-  subnet_id     = aws_subnet.public[0].id
 
-  tags = {
-    Name        = "${var.project_name}-nat"
-    Environment = var.environment
-  }
-}
 
-# Single EIP for NAT Gateway
+# Elastic IP because NAT Gateway needs a Elastic IP
 resource "aws_eip" "nat" {
   domain = "vpc"
 
@@ -66,6 +57,20 @@ resource "aws_eip" "nat" {
     Environment = var.environment
   }
 }
+
+
+
+# Single NAT Gateway for cost optimization
+resource "aws_nat_gateway" "main" {
+  allocation_id = aws_eip.nat.id # Allocation ID of the Elastic IP
+  subnet_id     = aws_subnet.public[0].id
+
+  tags = {
+    Name        = "${var.project_name}-nat"
+    Environment = var.environment
+  }
+}
+
 
 # Public Route Table
 resource "aws_route_table" "public" {

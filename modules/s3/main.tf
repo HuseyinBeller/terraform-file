@@ -7,6 +7,7 @@ resource "aws_s3_bucket" "docker_files" {
   }
 }
 
+# If you wanna change the default encryption of your S3 bucket, you can use kms key to encrypt the S3 Bucket
 resource "aws_s3_bucket_server_side_encryption_configuration" "docker_files" {
   bucket = aws_s3_bucket.docker_files.id
 
@@ -26,6 +27,7 @@ resource "aws_s3_bucket_public_access_block" "docker_files" {
   restrict_public_buckets = true
 }
 
+## We can use this locals block to store the files that we want to upload to the S3 bucket
 locals {
   s3_files = {
     "Dockerfile"  = "${path.module}/Dockerfile"
@@ -33,6 +35,7 @@ locals {
   }
 }
 
+## We can use this resource block to upload the files to the S3 bucket
 resource "aws_s3_object" "docker_files" {
   for_each   = local.s3_files
   bucket     = aws_s3_bucket.docker_files.id
