@@ -12,6 +12,7 @@ module "network" {
   environment   = var.environment
 }
 
+
 # Security Groups Module
 module "security" {
   source        = "./modules/security"
@@ -23,6 +24,7 @@ module "security" {
   my_ip         = var.my_ip
 }
 
+# EC2 Module
 module "ec2" {
   source             = "./modules/ec2"
   project_name       = var.project_name
@@ -41,6 +43,8 @@ module "iam" {
   project_name = var.project_name
 }
 
+
+# KMS Module
 module "kms" {
   source            = "./modules/kms"
   environment       = var.environment
@@ -49,6 +53,7 @@ module "kms" {
   delete_windows    = var.delete_windows
 }
 
+# S3 Module
 module "s3" {
   source       = "./modules/s3"
   environment  = var.environment
@@ -57,6 +62,8 @@ module "s3" {
   kms_key_id   = module.kms.key_id
 }
 
+
+# Keypair Module
 module "keypair" {
   source = "./modules/keypair"
 }
