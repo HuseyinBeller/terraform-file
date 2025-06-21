@@ -18,6 +18,7 @@ variable "default-route" {
   type        = string
 }
 
+# For each works with a set or a map data type. We can use it to iterate over a set of values.
 variable "portnumber" {
   description = "Security Group Port Number"
   type        = set(string)

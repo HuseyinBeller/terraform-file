@@ -21,7 +21,7 @@ resource "aws_subnet" "public" {
   tags = {
     Name        = "${var.project_name}-public-subnet-${count.index + 1}"
     Environment = var.environment
-  }
+    }
 }
 
 resource "aws_subnet" "private" {
@@ -63,7 +63,7 @@ resource "aws_eip" "nat" {
 # Single NAT Gateway for cost optimization
 resource "aws_nat_gateway" "main" {
   allocation_id = aws_eip.nat.id # Allocation ID of the Elastic IP
-  subnet_id     = aws_subnet.public[0].id
+  subnet_id     = aws_subnet.public[0].id # The first public subnet will be used for the NAT Gateway.
 
   tags = {
     Name        = "${var.project_name}-nat"
@@ -102,12 +102,13 @@ resource "aws_route_table" "private" {
   }
 }
 
-# Public Route Table Associations
+# Public Route Table Associations. Since we created the subnet with the count of meta argument we can as well use the count also to add them to route table as well.
 resource "aws_route_table_association" "public" {
   count          = 2
   subnet_id      = aws_subnet.public[count.index].id
   route_table_id = aws_route_table.public.id
 }
+
 
 # Private Route Table Associations
 resource "aws_route_table_association" "private" {

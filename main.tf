@@ -16,6 +16,7 @@ module "network" {
 # Security Groups Module
 module "security" {
   source        = "./modules/security"
+
   vpc_id        = module.network.vpc_id
   default-route = var.default-route
   project_name  = var.project_name
@@ -32,7 +33,7 @@ module "ec2" {
   keyname            = module.keypair.keypair
   environment        = var.environment
   subnet_id          = module.network.public_subnet_ids[0]
-  security_group_ids = [module.security.docker_compose_sg]
+  security_group_ids = [module.security.docker_compose_sg] # It is a list of security group ids.
   ec2_instance_type  = var.ec2_instance_type
   depends_on         = [module.s3]
 }
@@ -66,4 +67,5 @@ module "s3" {
 # Keypair Module
 module "keypair" {
   source = "./modules/keypair"
+  
 }
