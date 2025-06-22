@@ -102,6 +102,7 @@ module "eks_blueprints_addons" {
   }
 
   kube_prometheus_stack = {
+    depends_on = [module.eks_blueprints_addons.aws_load_balancer_controller]
     chart         = "kube-prometheus-stack"
     chart_version = "75.4.0"
     repository    = "https://prometheus-community.github.io/helm-charts"
