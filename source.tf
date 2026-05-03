@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "eu-west-2"
+  region = "eu-central-1"
 }
 
 # data "aws_availability_zone" "azs" {}
@@ -143,7 +143,7 @@ data "aws_ami" "master-class-ami" {
 
 resource "aws_instance" "master-class-instance" {
   ami           = data.aws_ami.master-class-ami.id
-  instance_type = var.instance_type[0]
+  instance_type = var. [0]
 
   subnet_id              = aws_subnet.master-class-sub-2.id
   vpc_security_group_ids = [aws_security_group.master-class-sg.id]
