@@ -26,7 +26,7 @@ resource "aws_s3_bucket_public_access_block" "docker_files" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
-
+  
 ## We can use this locals block to store the files that we want to upload to the S3 bucket
 locals {
   s3_files = {
